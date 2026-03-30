@@ -6,5 +6,7 @@
   "feelsLike": "Sensación",
   "humidity": "Humedad",
   "errorMsg": "Error al obtener clima",
-  "humShort": "Hum."
+  "humShort": "Hum.",
+  "wind": "Viento",
+  "ms": "m/s"
 }

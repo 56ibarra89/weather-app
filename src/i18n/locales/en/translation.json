@@ -6,5 +6,7 @@
   "feelsLike": "Feels like",
   "humidity": "Humidity",
   "errorMsg": "Error fetching weather",
-  "humShort": "Hum."
+  "humShort": "Hum.",
+  "wind": "Wind",
+  "ms": "m/s"
 }
