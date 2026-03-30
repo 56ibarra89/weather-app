@@ -1,15 +1,13 @@
-import { createContext, useState, ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { lightTheme, darkTheme } from '../theme/theme';
+import { ThemeContext } from './ThemeContext'; // Import from ThemeContext.ts
 
-interface ThemeContextProps {
-  toggleTheme: () => void;
-  isDarkMode: boolean;
+interface ThemeProviderProps {
+  children: ReactNode;
 }
 
-export const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
-
-export const ThemeProviderWrapper = ({ children }: { children: ReactNode }) => {
+export const ThemeProviderWrapper = ({ children }: ThemeProviderProps) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const toggleTheme = () => {

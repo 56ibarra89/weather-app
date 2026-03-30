@@ -1,27 +1,48 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setLanguage } from '../redux/weatherSlice';
 import { RootState } from '../redux/store';
-import { Button, ButtonGroup } from '@mui/material';
+import { Button, Box, alpha } from '@mui/material';
+import { Theme } from '@mui/material/styles';
 
 const LanguageSwitcher = () => {
   const dispatch = useDispatch();
   const language = useSelector((state: RootState) => state.weather.language);
 
   return (
-    <ButtonGroup variant="contained">
+    <Box sx={{ display: 'flex', gap: 1, background: (theme: Theme) => alpha(theme.palette.divider, 0.05), p: 0.5, borderRadius: '12px' }}>
       <Button
+        size="small"
         onClick={() => dispatch(setLanguage('en'))}
-        color={language === 'en' ? 'primary' : 'secondary'}
+        sx={{
+          borderRadius: '10px',
+          px: 2,
+          bgcolor: language === 'en' ? 'primary.main' : 'transparent',
+          color: language === 'en' ? 'primary.contrastText' : 'text.secondary',
+          '&:hover': {
+            bgcolor: language === 'en' ? 'primary.dark' : alpha('#000', 0.05),
+          },
+          boxShadow: language === 'en' ? '0 4px 12px rgba(99, 102, 241, 0.3)' : 'none',
+        }}
       >
-        English
+        EN
       </Button>
       <Button
+        size="small"
         onClick={() => dispatch(setLanguage('es'))}
-        color={language === 'es' ? 'primary' : 'secondary'}
+        sx={{
+          borderRadius: '10px',
+          px: 2,
+          bgcolor: language === 'es' ? 'primary.main' : 'transparent',
+          color: language === 'es' ? 'primary.contrastText' : 'text.secondary',
+          '&:hover': {
+            bgcolor: language === 'es' ? 'primary.dark' : alpha('#000', 0.05),
+          },
+          boxShadow: language === 'es' ? '0 4px 12px rgba(99, 102, 241, 0.3)' : 'none',
+        }}
       >
-        Español
+        ES
       </Button>
-    </ButtonGroup>
+    </Box>
   );
 };
 

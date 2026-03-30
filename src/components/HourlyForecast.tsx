@@ -1,86 +1,90 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
-import { Box, Typography, Card, CardContent } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { getWeather } from '../api/weatherService';
+import { useWeather } from '../hooks/useWeather';
+import { Box, Typography, Card, CardContent, alpha } from '@mui/material';
 
 const HourlyForecast = () => {
-  const { city, language } = useSelector((state: RootState) => state.weather);
-  const [forecast, setForecast] = useState<any[]>([]);
+  const { weather, loading } = useWeather();
+  const forecast = weather ? weather.list.slice(0, 6) : [];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getWeather(city, language);
-      if (data) {
-        setForecast(data.list.slice(0, 6)); // Mostramos las próximas 6 horas
-      }
-    };
-    fetchData();
-  }, [city, language]);
+  if (loading && !weather)
+    return <Typography textAlign="center" sx={{ mt: { xs: 4, md: 10 } }}>⌛ Cargando pronóstico...</Typography>;
 
-  if (forecast.length === 0)
-    return <Typography textAlign="center" sx={{ mt: 2 }}>⌛ Cargando pronóstico...</Typography>;
+  if (!weather) return null;
 
   return (
-    <Box mt={3} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
-        ⏳ Pronóstico por horas en {city}
-      </Typography>
+    <Box sx={{ textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Card sx={{ flexGrow: 1, p: { xs: 1, sm: 2 }, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <Typography variant="h5" sx={{ fontWeight: 700, mb: 3, pt: 2 }}>
+          Pronóstico Próximas Horas
+        </Typography>
 
       {/* Contenedor de las tarjetas */}
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'center',
-          gap: 2,
+          gap: 3,
           p: 2,
+          pb: 4,
           overflowX: 'auto',
           maxWidth: '100%',
           scrollSnapType: 'x mandatory',
-          '&::-webkit-scrollbar': { height: 6 },
-          '&::-webkit-scrollbar-thumb': { background: '#1976d2', borderRadius: 4 }
+          cursor: 'grab',
+          '&::-webkit-scrollbar': { height: 8 },
+          '&::-webkit-scrollbar-track': { 
+            background: 'transparent',
+          },
+          '&::-webkit-scrollbar-thumb': { 
+            background: (theme) => alpha(theme.palette.primary.main, 0.2), 
+            borderRadius: 10,
+            '&:hover': {
+              background: (theme) => alpha(theme.palette.primary.main, 0.4),
+            }
+          }
         }}
       >
         {forecast.map((hour, index) => (
           <Card
             key={index}
             sx={{
-              minWidth: 140,
-              textAlign: 'center',
-              p: 2,
-              borderRadius: 3,
-              boxShadow: 3,
-              bgcolor: 'background.paper',
-              scrollSnapAlign: 'center',
-              transition: 'transform 0.2s ease-in-out',
-              '&:hover': { transform: 'scale(1.05)', boxShadow: 6 }
+              minWidth: 160,
+              p: 1,
+              scrollSnapAlign: 'start',
             }}
           >
-            <CardContent>
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
+            <CardContent sx={{ p: '16px !important' }}>
+              <Typography variant="subtitle2" color="text.secondary" sx={{ fontWeight: 600, mb: 1 }}>
                 {new Date(hour.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </Typography>
-              <img
+              
+              <Box
+                component="img"
                 src={`https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`}
                 alt="icono"
-                style={{ width: 50, height: 50 }}
+                sx={{ width: 60, height: 60, mx: 'auto', filter: 'drop-shadow(0 4px 4px rgba(0,0,0,0.05))' }}
               />
-              <Typography variant="h6" color="primary" sx={{ fontWeight: 600 }}>
-                {hour.main.temp}°C
+              
+              <Typography variant="h5" sx={{ fontWeight: 800, color: 'primary.main', my: 1 }}>
+                {Math.round(hour.main.temp)}°
               </Typography>
-              <Typography variant="body2" color="text.secondary">
-                🌡️ Sensación térmica: {hour.main.feels_like}°C
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                💧 Humedad: {hour.main.humidity}%
-              </Typography>
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
+              
+              <Typography variant="caption" sx={{ display: 'block', mb: 1, textTransform: 'capitalize', fontWeight: 500 }}>
                 {hour.weather[0].description}
               </Typography>
+
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, borderTop: 1, borderColor: 'divider', pt: 1, mt: 1 }}>
+                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Typography variant="caption" color="text.secondary">Sensación</Typography>
+                  <Typography variant="caption" sx={{ fontWeight: 600 }}>{Math.round(hour.main.feels_like)}°</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Typography variant="caption" color="text.secondary">Humedad</Typography>
+                  <Typography variant="caption" sx={{ fontWeight: 600 }}>{hour.main.humidity}%</Typography>
+                </Box>
+              </Box>
             </CardContent>
           </Card>
         ))}
-      </Box>
+        </Box>
+      </Card>
     </Box>
   );
 };
