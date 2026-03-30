@@ -1,9 +1,11 @@
 import { useWeather } from '../hooks/useWeather';
 import { Card, CardContent, Typography, Box, CircularProgress, Grid } from '@mui/material';
 import { Thermostat, WaterDrop } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
 
 const WeatherDisplay = () => {
   const { weather, loading, error } = useWeather();
+  const { t } = useTranslation();
 
   if (loading && !weather) return (
     <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>
@@ -11,7 +13,7 @@ const WeatherDisplay = () => {
     </Box>
   );
 
-  if (error && !weather) return <Typography align="center" sx={{ mt: 4, color: 'error.main' }}>❌ {error}</Typography>;
+  if (error && !weather) return <Typography align="center" sx={{ mt: 4, color: 'error.main' }}>{t('errorMsg')}</Typography>;
   if (!weather) return null;
 
   const forecast = weather.list[0];
@@ -48,7 +50,7 @@ const WeatherDisplay = () => {
           <Grid item xs={6}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
               <WaterDrop fontSize="small" color="primary" />
-              <Typography variant="body1" sx={{ fontWeight: 600 }}>{forecast.main.humidity}% Hum.</Typography>
+              <Typography variant="body1" sx={{ fontWeight: 600 }}>{forecast.main.humidity}% {t('humShort')}</Typography>
             </Box>
           </Grid>
         </Grid>

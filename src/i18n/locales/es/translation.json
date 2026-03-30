@@ -1,0 +1,10 @@
+{
+  "hourlyForecastTitle": "Pronóstico Próximas Horas",
+  "dailyForecastTitle": "Próximos 5 Días",
+  "searchPlaceholder": "Busca tu ciudad...",
+  "loadingForecast": "Cargando pronóstico...",
+  "feelsLike": "Sensación",
+  "humidity": "Humedad",
+  "errorMsg": "Error al obtener clima",
+  "humShort": "Hum."
+}

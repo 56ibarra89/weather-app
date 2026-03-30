@@ -48,10 +48,10 @@ const App = () => {
             <WeatherDisplay />
           </Grid>
           <Grid item xs={12} md={8}>
-            <HourlyForecast />
+            <DailyForecast />
           </Grid>
           <Grid item xs={12}>
-            <DailyForecast />
+            <HourlyForecast />
           </Grid>
         </Grid>
       </Container>

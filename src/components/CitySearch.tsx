@@ -13,9 +13,11 @@ import { Search, LocationOn } from "@mui/icons-material";
 import { getCitySuggestions } from "../api/weatherService";
 import { CitySuggestion } from "../api/types";
 import { RootState } from "../redux/store";
+import { useTranslation } from "react-i18next";
 
 const CitySearch = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { language } = useSelector((state: RootState) => state.weather);
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<CitySuggestion[]>([]);
@@ -87,11 +89,7 @@ const CitySearch = () => {
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder={
-            language === "es"
-              ? "Busca tu ciudad (ej. Santa Cruz)..."
-              : "Search your city..."
-          }
+          placeholder={t("searchPlaceholder")}
           variant="outlined"
           size="small"
           fullWidth

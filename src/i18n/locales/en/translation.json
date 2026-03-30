@@ -1,0 +1,10 @@
+{
+  "hourlyForecastTitle": "Hourly Forecast",
+  "dailyForecastTitle": "Next 5 Days",
+  "searchPlaceholder": "Search your city...",
+  "loadingForecast": "Loading forecast...",
+  "feelsLike": "Feels like",
+  "humidity": "Humidity",
+  "errorMsg": "Error fetching weather",
+  "humShort": "Hum."
+}
